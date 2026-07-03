@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productivity Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">✓</div>
+        <div>
+          <h1>Productivity</h1>
+          <p>Tracker</p>
+        </div>
+      </div>
+
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span>Dashboard</button>
+        <button class="nav-item" data-view="all"><span>▤</span>All Tasks</button>
+        <button class="nav-item" data-view="completed"><span>✓</span>Completed</button>
+        <button class="nav-item" data-view="pending"><span>◷</span>Pending</button>
+        <button class="nav-item" data-view="categories"><span>⌘</span>Categories</button>
+        <button class="nav-item" data-open-settings><span>⚙</span>Settings</button>
+      </nav>
+
+      <div class="quote-card">
+        <p>Small progress<br>is still progress.</p>
+        <b>✦</b>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="profile-chip" data-open-settings>
+          <span class="avatar" id="avatarInitial">J</span>
+          <strong id="sidebarName">Janaki</strong>
+        </button>
+        <label class="theme-card">
+          <span id="themeLabelIcon">☀</span>
+          <span id="themeLabel">Light Mode</span>
+          <input type="checkbox" id="themeToggle" aria-label="Toggle dark mode">
+          <i></i>
+        </label>
+      </div>
+    </aside>
+
+    <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="openSidebar" aria-label="Open sidebar">☰</button>
+        <section class="greeting-block">
+          <h2 id="greetingText">Good Morning, Janaki 👋</h2>
+          <p>Let's make today productive.</p>
+        </section>
+        <div class="top-actions">
+          <div class="date-pill"><span>▣</span><time id="dateText"></time></div>
+          <button class="icon-button" id="quickThemeToggle" aria-label="Toggle theme">☀</button>
+          <button class="icon-button" data-open-settings aria-label="Open settings">⚙</button>
+        </div>
+      </header>
+
+      <section class="dashboard-grid">
+        <div class="workspace">
+          <div class="search-row">
+            <label class="search-box">
+              <span>⌕</span>
+              <input type="search" id="searchInput" placeholder="Search tasks...">
+            </label>
+            <button class="primary-button" id="focusAddForm"><span>＋</span>Add Task</button>
+          </div>
+
+          <form class="task-form glass-panel" id="taskForm">
+            <input type="text" id="taskInput" placeholder="What are you planning to do?" maxlength="90" required>
+            <select id="categorySelect" aria-label="Task category"></select>
+            <select id="prioritySelect" aria-label="Task priority">
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+            <button class="primary-button" type="submit" id="submitTask">Add Task</button>
+          </form>
+
+          <div class="filter-tabs" role="tablist" aria-label="Task filters">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="pending"><span class="dot pending-dot"></span>Pending</button>
+            <button class="filter-tab" data-filter="completed"><span class="dot completed-dot"></span>Completed</button>
+          </div>
+
+          <section class="tasks-card glass-panel" aria-label="Tasks">
+            <div class="empty-state" id="emptyState">
+              <strong>No tasks yet</strong>
+              <p>Add your first task to start tracking progress.</p>
+            </div>
+            <ul class="task-list" id="taskList"></ul>
+          </section>
+
+          <section class="categories-view glass-panel hidden" id="categoriesView" aria-label="Categories">
+            <div class="section-head">
+              <div>
+                <h3>Categories</h3>
+                <p>Organize tasks by workspace, class, project, or personal area.</p>
+              </div>
+            </div>
+            <form class="category-form" id="categoryForm">
+              <input type="text" id="newCategoryInput" placeholder="Add new category" maxlength="24" required>
+              <button class="primary-button" type="submit">Add Category</button>
+            </form>
+            <div class="category-grid" id="categoryGrid"></div>
+          </section>
+
+        </div>
+
+        <aside class="analytics-rail">
+          <article class="progress-card glass-panel">
+            <h3>Today's Progress</h3>
+            <div class="progress-ring" id="progressRing" style="--progress: 0">
+              <strong id="progressPercent">0%</strong>
+            </div>
+            <p id="progressMessage">Ready when you are.</p>
+          </article>
+
+          <article class="stat-card glass-panel"><span class="stat-icon blue">▣</span><p>Total Tasks</p><strong id="totalCount">0</strong></article>
+          <article class="stat-card glass-panel"><span class="stat-icon green">✓</span><p>Completed</p><strong id="completedCount">0</strong></article>
+          <article class="stat-card glass-panel"><span class="stat-icon amber">◷</span><p>Pending</p><strong id="pendingCount">0</strong></article>
+
+          <article class="category-card glass-panel">
+            <h3>Categories</h3>
+            <div id="categorySummary"></div>
+            <button class="link-button" data-view-link="categories">View all</button>
+          </article>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="settingsModal" aria-hidden="true">
+    <section class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="settingsTitle">Settings</h2>
+          <p>Personalize your workspace.</p>
+        </div>
+        <button class="icon-button" id="closeSettings" aria-label="Close settings">×</button>
+      </div>
+      <form id="settingsForm">
+        <label class="field-label" for="nameInput">Name</label>
+        <input class="settings-input" id="nameInput" type="text" maxlength="32" placeholder="Your name">
+
+        <label class="settings-theme">
+          <span>
+            <strong>Theme preference</strong>
+            <small>Switch between light and dark dashboard modes.</small>
+          </span>
+          <input type="checkbox" id="settingsThemeToggle" aria-label="Settings theme toggle">
+          <i></i>
+        </label>
+
+        <div class="modal-actions">
+          <button class="danger-button" type="button" id="resetTasks">Reset all tasks</button>
+          <button class="primary-button" type="submit">Save Settings</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
